@@ -1,0 +1,21 @@
+name: Laravel GitHub Actions
+on: [push]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-18.04
+    container: ehemmerlin/laravel-ci:latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: composer install --prefer-dist --no-ansi --no-interaction -- no-progress --no-scripts
+      - run: ./vendor/bin/phpcs --standard=./phpcs.xml --extensions=php app
+      - run: yarn install
+      - run: yarn run production
+      - name: Configure application
+        run: |
+          cp .env.example .env
+          php artisan cache:clear
+          php artisan config:clear
+          php artisan key:generate
+      - run: ./vendor/bin/phpunit --coverage-text --colors=never
