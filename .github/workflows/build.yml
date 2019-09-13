@@ -8,7 +8,7 @@ jobs:
     container: ehemmerlin/laravel-ci:latest
     steps:
       - uses: actions/checkout@v1
-      - run: composer install --prefer-dist --no-ansi --no-interaction -- no-progress --no-scripts
+      - run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
       - run: ./vendor/bin/phpcs --standard=./phpcs.xml --extensions=php app
       - run: yarn install
       - run: yarn run production
